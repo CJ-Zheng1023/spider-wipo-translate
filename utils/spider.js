@@ -21,11 +21,12 @@ var requestWipoTranslate = function(options, postData){
 var responseWipoTranslate = function(response){
     var p = new Promise((resolve, reject) => {
         var html = ''
+        response.setEncoding('utf8')
         response.on('data', (chunck) => {
             html += chunck
         })
         response.on('end', () => {
-            resolve(response)
+            resolve(html)
         })
     })
     return p
