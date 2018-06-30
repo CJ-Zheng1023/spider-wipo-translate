@@ -1,0 +1,21 @@
+{
+  "name": "spider-wipo-translate",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "CJ-Zheng1023 <CJ_Zheng1023@hotmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/CJ-Zheng1023/spider-wipo-translate",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
+}

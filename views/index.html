@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="form">
+    <textarea id="source" name="source" rows="8" style="width: 500px;"></textarea>
+    <button id="translateBtn" type="button">翻译</button>
+</form>
+<textarea id="translation" rows="8" style="width: 500px;"></textarea>
+
+<script src="/components/jquery/dist/jquery.min.js"></script>
+<script>
+    $(function(){
+        $('#translateBtn').on('click', function(){
+            $.ajax({
+                url: '/api/v1/translate',
+                data: {
+                    source: $('#source').val()
+                },
+                type: 'POST',
+                dataType: 'json'
+            }).then((res) => {
+                $('#translation').val(res.translation)
+            }).catch((e) => {
+                alert('翻译出错')
+            })
+            return false
+        })
+    })
+</script>
+</body>
+</html>

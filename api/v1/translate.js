@@ -1,6 +1,5 @@
 var spider = require('../../utils/spider')
 var options = require('../../config/wipo-config')
-var cheerio = require('cheerio')
 var parser = require('../../utils/parser')
 module.exports = {
     translateText(req, res, next){
@@ -12,7 +11,7 @@ module.exports = {
         }).then((html) => {
             return spider.requestWipoTranslate(options.translation, {
                 'formToTranslate': 'formToTranslate',
-                'formToTranslate:srcTxt': 'JavaServer Faces (JSF) 是一种用于构建Java Web 应用程序的标准框架（是Java Community Process 规定的JSR-127标准）。它提供了一种以组件为中心的用户界面（UI）构建方法，从而简化了Java服务器端应用程序的开发。由于由Java Community Process (JCP) 推动，属于Java EE 5中的技术规范，而受到了厂商的广泛支持。',
+                'formToTranslate:srcTxt': req.body.source,
                 'formToTranslate:domain': 'XXXX',
                 'formToTranslate:langpair': 'zh-NMT-en',
                 'formToTranslate:userProvidedTranslations': '',
@@ -20,21 +19,26 @@ module.exports = {
                 'formToTranslate:txtTranslated': '',
                 'formToTranslate:taptakey': '',
                 'formToTranslate:captchaText': '',
-                'javax.faces.ViewState':parser.getValueById(html, '#javax\\.faces\\.ViewState'),
+                'javax.faces.ViewState': parser.getValueById(html, '#javax\\.faces\\.ViewState'),
+                //'javax.faces.ViewState': '1897454927956830145:4790408373973137206',
                 'javax.faces.source': 'formToTranslate:formToTranslateSubmit',
                 'javax.faces.partial.event': 'click',
                 'javax.faces.partial.execute': 'formToTranslate:formToTranslateSubmit formToTranslate',
-                'javax.faces.partial.render': 'formToTranslate:domain formToTranslate:translationResult',
+                'javax.faces.partial.render': 'formToTranslate:langpair formToTranslate:domain formToTranslate:translationResult',
                 'javax.faces.behavior.event': 'action',
                 'javax.faces.partial.ajax': 'true'
             })
         }).then((response) => {
             return spider.responseWipoTranslate(response)
         }).then((html) => {
-            res.json(html)
+            var translation = parser.getTranslation(parser.getHtmlById(html, '#dstTextProposals'))
+            res.json({
+                translation
+            })
         }).catch((e) => {
-            res.send(e)
+            console.log(e)
+            res.status(500)
+            res.send('500')
         })
-
     }
 }
