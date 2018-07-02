@@ -1,15 +1,16 @@
 var options = require('../../config/wipo-config-v2')
 var parser = require('../../utils/parser')
-var rp = require('request-promise')
+var rq = require('request-promise')
 module.exports = {
     translateText(req, res, next){
-        rp = rp.defaults({jar: true})
+        var j = rq.jar()
+        rq = rq.defaults({jar: j})
         var startTime
-        rp(options.main).then((html) => {
+        rq(options.main).then((html) => {
             options.translation.form['formToTranslate:srcTxt'] = req.body.source
             options.translation.form['javax.faces.ViewState'] = parser.getValueById(html, '#javax\\.faces\\.ViewState')
             startTime = +new Date()
-            return rp(options.translation)
+            return rq(options.translation)
         }).then((html) => {
             var spendTime = +new Date() - startTime
             var translation = parser.getTranslation(parser.getHtmlById(html, '#dstTextProposals'))
