@@ -1,5 +1,5 @@
 var spider = require('../../utils/spider')
-var options = require('../../config/wipo-config')
+var options = require('../../config/wipo-config-v1')
 var parser = require('../../utils/parser')
 module.exports = {
     translateText(req, res, next){

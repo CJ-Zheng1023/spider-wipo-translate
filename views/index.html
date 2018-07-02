@@ -16,7 +16,7 @@
     $(function(){
         $('#translateBtn').on('click', function(){
             $.ajax({
-                url: '/api/v1/translate',
+                url: '/api/v2/translate',
                 data: {
                     source: $('#source').val()
                 },
@@ -25,7 +25,7 @@
             }).then((res) => {
                 $('#translation').val(res.translation)
             }).catch((e) => {
-                alert('翻译出错')
+                alert(e)
             })
             return false
         })
