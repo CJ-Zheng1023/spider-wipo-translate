@@ -16,6 +16,7 @@
 <script>
     $(function(){
         $('#translateBtn').on('click', function(){
+            $('#translation').val('努力翻译中。。。')
             $.ajax({
                 url: '/api/v2/translate',
                 data: {
@@ -27,6 +28,7 @@
                 $('#translation').val(res.translation)
                 $('#spendTime').text(`${res.spendTime}ms`)
             }).fail((xmlHttpRequest) => {
+                $('#translation').val('翻译出了点问题。。。')
                 alert(xmlHttpRequest.responseJSON.msg)
             })
             return false
