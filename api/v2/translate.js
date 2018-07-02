@@ -1,7 +1,6 @@
 var options = require('../../config/wipo-config-v2')
 var parser = require('../../utils/parser')
 var rp = require('request-promise')
-var tough = require('tough-cookie')
 module.exports = {
     translateText(req, res, next){
         rp = rp.defaults({jar: true})
