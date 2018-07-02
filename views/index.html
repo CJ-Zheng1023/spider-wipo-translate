@@ -8,6 +8,7 @@
 <form id="form">
     <textarea id="source" name="source" rows="8" style="width: 500px;"></textarea>
     <button id="translateBtn" type="button">翻译</button>
+    <strong>耗时:</strong><span id="spendTime"></span>
 </form>
 <textarea id="translation" rows="8" style="width: 500px;"></textarea>
 
@@ -22,10 +23,11 @@
                 },
                 type: 'POST',
                 dataType: 'json'
-            }).then((res) => {
+            }).done((res) => {
                 $('#translation').val(res.translation)
-            }).catch((e) => {
-                alert(e)
+                $('#spendTime').text(`${res.spendTime}ms`)
+            }).fail((xmlHttpRequest) => {
+                alert(xmlHttpRequest.responseJSON.msg)
             })
             return false
         })

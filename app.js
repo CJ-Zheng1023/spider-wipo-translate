@@ -15,6 +15,9 @@ app.use('/api/v2', apiV2)
 app.get('/index', function(req, res, next){
     res.sendFile(__dirname + '/views/index.html')
 })
+app.get('/batch', function(req, res, next){
+    res.sendFile(__dirname + '/views/batch-translate.html')
+})
 app.listen(app.get('port'), function(){
     console.log('server start!')
 })
