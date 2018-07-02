@@ -15,6 +15,7 @@ module.exports = {
             var translation = parser.getTranslation(parser.getHtmlById(html, '#dstTextProposals'))
             res.json({translation, spendTime})
         }).catch((err) => {
+            console.log(err)
             res.status(500)
             res.json({msg: '翻译错误'})
         });
