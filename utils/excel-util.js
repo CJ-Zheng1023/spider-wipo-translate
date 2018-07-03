@@ -1,17 +1,24 @@
 var xlsx = require('node-xlsx')
 var fs = require('fs')
 module.exports = {
-    parser(start, end){
+    /**
+     * 读取excel某一行数据
+     * @param line  行号
+     * @returns {Array}
+     */
+    parser(line){
         var obj = xlsx.parse(__dirname + '/data.xlsx')
-        var excelObj=obj[2].data, length = excelObj.length
+        var excelObj=obj[2].data
         var exportData = []
-        for(var i = start; i < end; i ++){
-            var arr = [], item = excelObj[i]
-            arr.push(item[0], item[1], item[2], item[3], item[4])
-            exportData.push(arr)
-        }
+        var arr = [], item = excelObj[line]
+        arr.push(item[0], item[1], item[2], item[3], item[4])
+        exportData.push(arr)
         return exportData
     },
+    /**
+     * 写入到excel
+     * @param exportData 要写入的数据
+     */
     writer(exportData){
         var buffer = xlsx.build([
             {

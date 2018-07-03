@@ -3,6 +3,12 @@ var parser = require('../../utils/parser')
 var fs = require('fs')
 var rq = require('request-promise')
 module.exports = {
+    /**
+     * 执行翻译，爬取翻译结果
+     * @param req
+     * @param res
+     * @param next
+     */
     translateText(req, res, next){
         var j = rq.jar()
         rq = rq.defaults({jar: j})
