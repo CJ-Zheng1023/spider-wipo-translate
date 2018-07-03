@@ -1,5 +1,6 @@
 var options = require('../../config/wipo-config-v2')
 var parser = require('../../utils/parser')
+var fs = require('fs')
 var rq = require('request-promise')
 module.exports = {
     translateText(req, res, next){
@@ -14,6 +15,9 @@ module.exports = {
         }).then((html) => {
             var spendTime = +new Date() - startTime
             var translation = parser.getTranslation(parser.getHtmlById(html, '#dstTextProposals'))
+            if(!translation){
+                fs.writeFileSync(__dirname + '/html-log.txt', `${req.body.source}---${html}\n`, {flag: 'a+'})
+            }
             if(typeof next === 'function'){
                 next(res, `${res.key}:${translation}`)
             }

@@ -2,7 +2,7 @@ var xlsx = require('node-xlsx')
 var fs = require('fs')
 module.exports = {
     parser(start, end){
-        var obj = xlsx.parse(__dirname+'/data.xlsx')
+        var obj = xlsx.parse(__dirname + '/data.xlsx')
         var excelObj=obj[2].data, length = excelObj.length
         var exportData = []
         for(var i = start; i < end; i ++){
@@ -19,6 +19,6 @@ module.exports = {
                 data: exportData
             }
         ])
-        fs.writeFileSync('output.xlsx', buffer, {flag: 'a+'})
+        fs.writeFileSync(__dirname + '/output.xlsx', buffer, {flag: 'a+'})
     }
 }
