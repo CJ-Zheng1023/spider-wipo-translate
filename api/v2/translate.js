@@ -14,6 +14,9 @@ module.exports = {
         }).then((html) => {
             var spendTime = +new Date() - startTime
             var translation = parser.getTranslation(parser.getHtmlById(html, '#dstTextProposals'))
+            if(typeof next === 'function'){
+                next(res, `${res.key}:${translation}`)
+            }
             res.json({translation, spendTime})
         }).catch((err) => {
             console.log(err)
