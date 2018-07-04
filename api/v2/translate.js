@@ -1,6 +1,6 @@
 var options = require('../../config/wipo-config-v2')
 var parser = require('../../utils/parser')
-var Response = require('../../utils/Response')
+var Response = require('../../utils/response')
 var fs = require('fs')
 var rq = require('request-promise')
 var fu = require('../../utils/function-util')

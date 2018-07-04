@@ -1,7 +1,7 @@
 var spider = require('../api/v2/translate')
 var fu = require('../utils/function-util')
 var eu = require('../utils/excel-util')
-var Response = require('../utils/Response')
+var Response = require('../utils/response')
 var fs = require('fs')
 
 var translations = [], responses = [], exportData
