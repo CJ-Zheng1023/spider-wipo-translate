@@ -17,7 +17,7 @@ var collector = function(res, translation){
     if(translation){
         translations.push(translation)
     }else{
-        fs.writeFileSync(`${__dirname}/${res.index}-no-translate.txt`, `${res.key}:${res.value} `, {flag: 'a+'})
+        fs.writeFileSync(`${__dirname}/${res.index}-no-translate.txt`, `'${res.key}:${res.value}', `, {flag: 'a+'})
     }
     if(ifCompleted()){
         exportData[0].push(translations.join(" ").replace(/\n/gi, ''))
@@ -48,6 +48,7 @@ var line = arguments[0] || 1
 var startTime = +new Date()
 exportData = eu.parser(line)
 var words = exportData[0][4].split(' '), index = exportData[0][0]
+words = ['clms:内部', 'clms:倒数', 'abs:接收器', 'clms:止', 'clms:芯片', 'clms:多路分用', 'clms:拓扑结构', 'abs:电子装置']
 var delay = 0
 for(var word of words){
     var arr = word.split(':')
