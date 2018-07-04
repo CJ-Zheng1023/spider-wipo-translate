@@ -17,11 +17,11 @@ var collector = function(res, translation){
     if(translation){
         translations.push(translation)
     }else{
-        fs.writeFileSync(__dirname + '/no-translate.txt', `${res.key}:${res.value} `, {flag: 'a+'})
+        fs.writeFileSync(`${__dirname}/${res.index}-no-translate.txt`, `${res.key}:${res.value} `, {flag: 'a+'})
     }
     if(ifCompleted()){
-        exportData[0].push(translations.join(" "))
-        console.log(translations.join(" ").replace(/\n/gi, ''))
+        exportData[0].push(translations.join(" ").replace(/\n/gi, ''))
+        console.log(`line ${res.index}的翻译结果:${translations.join(" ").replace(/\n/gi, '')}`)
         console.log(`用时${(+new Date() - startTime) / 1000}秒`)
         eu.writer(exportData)
 
@@ -49,7 +49,7 @@ var line = arguments[0] || 1
 
 var startTime = +new Date()
 exportData = eu.parser(line)
-var words = exportData[0][4].split(' ')
+var words = exportData[0][4].split(' '), index = exportData[0][0]
 var delay = 0
 for(var word of words){
     var arr = word.split(':')
@@ -58,7 +58,7 @@ for(var word of words){
     req.body = {
         source: value
     }
-    var res = new Response(key, value)
+    var res = new Response(key, value, index)
     responses.push(res)
     //设置延迟执行时间
     delay += Math.floor(Math.random() * (DELAY_END * 1000 - DELAY_START * 1000 + 1) + DELAY_START * 1000)
