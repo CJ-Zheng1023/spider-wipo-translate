@@ -23,9 +23,7 @@ var collector = function(res, translation){
         exportData[0].push(translations.join(" ").replace(/\n/gi, ''))
         console.log(`line ${res.index}的翻译结果:${translations.join(" ").replace(/\n/gi, '')}`)
         console.log(`用时${(+new Date() - startTime) / 1000}秒`)
-        eu.writer(exportData)
-
-
+        eu.writer(exportData, res.index)
     }
 }
 /**
@@ -61,7 +59,7 @@ for(var word of words){
     var res = new Response(key, value, index)
     responses.push(res)
     //设置延迟执行时间
-    delay += Math.floor(Math.random() * (DELAY_END * 1000 - DELAY_START * 1000 + 1) + DELAY_START * 1000)
+    delay += fu.randomNumber(DELAY_START * 1000, DELAY_END * 1000)
     var debouncer = fu.debounce(delay, spider.translateText)
     debouncer(req, res, collector)
 }

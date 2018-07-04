@@ -3,6 +3,7 @@ var parser = require('../../utils/parser')
 var Response = require('../../utils/Response')
 var fs = require('fs')
 var rq = require('request-promise')
+var fu = require('../../utils/function-util')
 module.exports = {
     /**
      * 执行翻译，爬取翻译结果
@@ -14,9 +15,15 @@ module.exports = {
         var j = rq.jar()
         rq = rq.defaults({jar: j})
         var startTime
+        var userAgent = fu.randomUserAgent()
+        var fakeIp = fu.randomIp()
+        options.main.headers['User-Agent'] = userAgent
+        options.main.headers['x-forwarded-for'] = fakeIp
         rq(options.main).then((html) => {
             options.translation.form['formToTranslate:srcTxt'] = req.body.source
             options.translation.form['javax.faces.ViewState'] = parser.getValueById(html, '#javax\\.faces\\.ViewState')
+            options.translation.headers['User-Agent'] = userAgent
+            options.translation.headers['x-forwarded-for'] = fakeIp
             startTime = +new Date()
             return rq(options.translation)
         }).then((html) => {

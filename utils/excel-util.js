@@ -20,14 +20,15 @@ module.exports = {
     /**
      * 写入到excel
      * @param exportData 要写入的数据
+     * @param index 数据编码
      */
-    writer(exportData){
+    writer(exportData, index){
         var buffer = xlsx.build([
             {
                 name: 'sheet1',
                 data: exportData
             }
         ])
-        fs.writeFileSync(__dirname + '/output.xlsx', buffer, {flag: 'w'})
+        fs.writeFileSync(`${__dirname}/${index}-output.xlsx`, buffer, {flag: 'w'})
     }
 }
