@@ -1,6 +1,8 @@
 var spider = require('../api/v2/translate')
 var fu = require('../utils/function-util')
 var eu = require('../utils/excel-util')
+var Response = require('../utils/Response')
+var fs = require('fs')
 
 var translations = [], responses = [], exportData
 /**
@@ -10,10 +12,18 @@ var translations = [], responses = [], exportData
  */
 var collector = function(res, translation){
     res.completed = true
-    translations.push(translation)
+    if(translation){
+        translations.push(translation)
+    }else{
+        fs.writeFileSync(__dirname + '/no-translate.txt', `${res.key}:${res.value} `, {flag: 'a+'})
+    }
     if(ifCompleted()){
         exportData[0].push(translations.join(" "))
+        console.log(translations.join(" ").replace(/\n/gi, ''))
+        console.log(`用时${(+new Date() - startTime) / 1000}秒`)
         eu.writer(exportData)
+
+
     }
 }
 /**
@@ -31,34 +41,14 @@ var ifCompleted = function(){
     return flag
 
 }
-/**
- * response对象
- * @param key      要翻译内容的字段
- * @param value    要翻译的内容
- * @constructor
- */
-var Response = function(key, value){
-    this.key = key
-    this.value = value
-    this.code = 200
-    this.completed = false   //翻译完成标识位
-}
-Response.prototype.json = function(obj){
-    if(this.code === 200){
-        var translation = obj.translation
-        console.log(`${this.value}的翻译结果----${this.key}:${translation} `)
-    }else{
-        console.log(`${this.value}${obj.msg}`)
-    }
 
-}
-Response.prototype.status = function(code){
-    this.code = code
-}
+var arguments = process.argv.slice(2)
+var line = arguments[0] || 1
 
-
-exportData = eu.parser(6)
+var startTime = +new Date()
+exportData = eu.parser(line)
 var words = exportData[0][4].split(' ')
+words = ['clms:人', 'abs:人民']
 var delay = 0
 for(var word of words){
     var arr = word.split(':')
