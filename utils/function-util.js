@@ -38,5 +38,17 @@ module.exports = {
      */
     randomIp(){
         return `${this.randomNumber(1, 255)}.${this.randomNumber(1, 255)}.${this.randomNumber(1, 255)}.${this.randomNumber(1, 255)}`
+    },
+    throttle(cycle, action){
+        var flag = 0
+        return function(){
+            var current = +new Date()
+            var self = this, args = arguments
+            if(current - flag > cycle){
+                action.apply(self, args)
+                flag = current
+            }
+
+        }
     }
 }
