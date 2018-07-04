@@ -45,8 +45,11 @@ module.exports = {
             var current = +new Date()
             var self = this, args = arguments
             if(current - flag > cycle){
-                action.apply(self, args)
+                console.log('do action')
                 flag = current
+                return action.apply(self, args)
+            }else{
+                return true
             }
 
         }

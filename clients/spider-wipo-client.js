@@ -13,18 +13,18 @@ var DELAY_START = 10, DELAY_END = 20
  * @param translation  翻译结果
  */
 var collector = function(res, translation){
-    res.completed = true
     if(translation){
         translations.push(translation)
     }else{
         fs.writeFileSync(`${__dirname}/${res.index}-no-translate.txt`, `'${res.key}:${res.value}', `, {flag: 'a+'})
     }
-    /*if(ifCompleted()){
+    res.completed = true
+    if(ifCompleted()){
         exportData[0].push(translations.join(" ").replace(/\n/gi, ''))
         console.log(`line ${res.index}的翻译结果:${translations.join(" ").replace(/\n/gi, '')}`)
         console.log(`用时${(+new Date() - startTime) / 1000}秒`)
         eu.writer(exportData, res.index)
-    }*/
+    }
 }
 /**
  * 判断所有请求是否执行完毕
@@ -48,7 +48,6 @@ var line = arguments[0] || 1
 var startTime = +new Date()
 exportData = eu.parser(line)
 var words = exportData[0][4].split(' '), index = exportData[0][0]
-words = ['clms:问谁']
 var delay = 0
 for(var word of words){
     var arr = word.split(':')
@@ -64,23 +63,3 @@ for(var word of words){
     var debouncer = fu.debounce(delay, spider.translateText)
     debouncer(req, res, collector)
 }
-
-var watcher = function(index){
-    if(ifCompleted()){
-        console.log('response is done')
-        exportData[0].push(translations.join(" ").replace(/\n/gi, ''))
-        console.log(`line ${index}的翻译结果:${translations.join(" ").replace(/\n/gi, '')}`)
-        console.log(`用时${(+new Date() - startTime) / 1000}秒`)
-        eu.writer(exportData, index)
-        return false
-    }else{
-        return true
-    }
-}
-var throttler = fu.throttle(3000, watcher)
-var flag = true
-while(flag){
-    console.log(11)
-    flag = throttler(line)
-}
-console.log('program is done')
